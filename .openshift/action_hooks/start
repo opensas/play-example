@@ -33,7 +33,7 @@ echo "$PLAY_COMMAND clean" >> $LOG_FILE
 $PLAY_COMMAND clean &> $LOG_FILE
 
 echo "$PLAY_COMMAND deps $DEPS_PARAMS -Divy.home=${OPENSHIFT_TMP_DIR}ivy2/" >> $LOG_FILE
-$PLAY_COMMAND deps $DEPS_PARAMS &> $LOG_FILE
+$PLAY_COMMAND deps $DEPS_PARAMS -Divy.home=${OPENSHIFT_TMP_DIR}ivy2/ &> $LOG_FILE
 
 if [[ ! $? -eq 0 ]]; then
 	echo "Error: could not update dependencies"
