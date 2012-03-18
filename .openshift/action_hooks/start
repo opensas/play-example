@@ -32,19 +32,16 @@ cd "$OPENSHIFT_REPO_DIR"
 echo "$PLAY_COMMAND clean" >> $LOG_FILE
 $PLAY_COMMAND clean &> $LOG_FILE
 
+# check https://github.com/opensas/play-example/issues/4
 # update dependencies
-echo "$PLAY_COMMAND deps $DEPS_PARAMS" >> $LOG_FILE
-$PLAY_COMMAND deps $DEPS_PARAMS &> $LOG_FILE
-
-if [[ ! $? -eq 0 ]]; then
-	echo "Error: could not update dependencies"
-	echo "Error executing '$PLAY_COMMAND $DEPS_PARAMS'"
-	exit 1
-fi
-
-# execute app
-#APP_COMMAND="exec '$PLAY_COMMAND' 'start' '--%${ID}' &> $LOG_FILE"
-#nohup bash -c APP_COMMAND  &> /dev/null &
+#echo "$PLAY_COMMAND deps $DEPS_PARAMS" >> $LOG_FILE
+#$PLAY_COMMAND deps $DEPS_PARAMS &> $LOG_FILE
+#
+#if [[ ! $? -eq 0 ]]; then
+#	echo "Error: could not update dependencies"
+#	echo "Error executing '$PLAY_COMMAND $DEPS_PARAMS'"
+#	exit 1
+#fi
 
 export PLAY_LOG_PATH=${OPENSHIFT_LOG_DIR}
 echo "$PLAY_COMMAND start --%$ID $PLAY_PARAMS" >> $LOG_FILE
