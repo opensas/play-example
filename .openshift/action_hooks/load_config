@@ -32,12 +32,14 @@ if [[ -f $PLAY_CONFIG_FILE ]]; then
 	function read_conf {
 		local key=$1
 		local default=$2
-		local result=`grep "^$key" $PLAY_CONFIG_FILE | grep -oP '=.*' | cut -b 1 --complement`
-		
-		if [[ -n "$result" ]]; then
-			echo $result
-		else
+		local result=`grep "^$key[ |=]" $PLAY_CONFIG_FILE`
+
+		# key not found
+		if [[ -z "$result" ]]; then
 			echo $default
+		else
+			result=`echo "$result" | grep -oP "=.*" | cut -b 1 --complement`
+			echo $result
 		fi
 	}
 

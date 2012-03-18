@@ -29,9 +29,11 @@ fi
 cd "$OPENSHIFT_REPO_DIR"
 
 # clean everything
+echo "$PLAY_COMMAND clean" >> $LOG_FILE
 $PLAY_COMMAND clean &> $LOG_FILE
 
 # update dependencies
+echo "$PLAY_COMMAND deps $DEPS_PARAMS" >> $LOG_FILE
 $PLAY_COMMAND deps $DEPS_PARAMS &> $LOG_FILE
 
 if [[ ! $? -eq 0 ]]; then
@@ -45,6 +47,7 @@ fi
 #nohup bash -c APP_COMMAND  &> /dev/null &
 
 export PLAY_LOG_PATH=${OPENSHIFT_LOG_DIR}
+echo "$PLAY_COMMAND start --%$ID $PLAY_PARAMS" >> $LOG_FILE
 nohup bash -c "$PLAY_COMMAND start --%$ID $PLAY_PARAMS &> $LOG_FILE" &> /dev/null &
 
 if [[ ! $? -eq 0 ]]; then
