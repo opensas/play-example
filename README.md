@@ -8,9 +8,7 @@ on OpenShift Express.
 Running on OpenShift
 ----------------------------
 
-Create an account at http://openshift.redhat.com/
-
-Create a raw (do-it-yourself) application:
+Create an account at http://openshift.redhat.com/, and then create a raw (do-it-yourself) application:
 
     rhc app create -a play -t raw-0.1
 
@@ -26,7 +24,7 @@ Then push the repo upstream:
 
 That's it, you can now checkout your application at:
 
-    http://play-$yournamespace.rhcloud.com
+    http://play-yournamespace.rhcloud.com
 
 If you are a perfectionist, now it would be a good time to change your application.name setting in conf/application.conf to match your application.
 
@@ -59,15 +57,13 @@ Updating your application
 To deploy your changes to openshift just add your changes to the index, commit and push:
 
     git add . -A
-
     git commit -m "a nice message"
-
     git push origin
 
 Working with modules
 ----------------------------
 
-You dont' have to do anything special, just add your modules to conf/dependencies.yml. Openshift will run
+You don't have to do anything special, just add your modules to conf/dependencies.yml. Openshift will run
 
     play deps --forProd --clearcache
 
@@ -89,13 +85,13 @@ If you feel like investigating further, you can
     raw
         Framework: raw-0.1
         Creation: 2012-03-18T12:39:18-04:00
-            UUID: dd7bb76f70e64d93b2aad1f55d4b8002
-        Git URL: ssh://$youruuid@play-$yournamespace.rhcloud.com/~/git/raw.git/
-        Public URL: http://play-$yournamespace.rhcloud.com
+        UUID: dd7bb76f70e64d93b2aad1f55d4b8002
+        Git URL: ssh://youruuid@play-yournamespace.rhcloud.com/~/git/raw.git/
+        Public URL: http://play-yournamespace.rhcloud.com
 
 Then you can connect using ssh like this:
 
-    ssh $youruuid@play-$yournamespace.rhcloud.com
+    ssh youruuid@play-yournamespace.rhcloud.com
 
 Having a look under the hood
 ----------------------------
@@ -128,12 +124,12 @@ By default play will run in production mode, you can change it setting %openshif
 Acknowledgments
 ----------------------------
 
-I couldn't have developed this quickstar without the help of marekjelen (https://github.com/marekjelen) who answered my questions on stackoverflow and who also shared his JRuby quickstart repo (https://github.com/marekjelen/openshift-jruby#readme). (I know, open source rocks!)
+I couldn't have developed this quickstar without the help of [marekjelen](https://github.com/marekjelen) who answered [my questions on stackoverflow](http://stackoverflow.com/questions/9446275/best-approach-to-integrate-netty-with-openshift) and who also shared his [JRuby quickstart repo](https://github.com/marekjelen/openshift-jruby#readme). (I know, open source rocks!)
 
-It was also of great help Grant Shipley's article on building a quickstart for openshift (https://www.redhat.com/openshift/community/blogs/how-to-create-an-openshift-github-quick-start-project)
+It was also of great help Grant Shipley's [article on building a quickstart for openshift](https://www.redhat.com/openshift/community/blogs/how-to-create-an-openshift-github-quick-start-project).
 
-Play framework native support for openshift was a long awaited and pretty popular feature (you are still on time to vote for it at https://www.redhat.com/openshift/community/content/native-support-for-play-framework-application) So it's a great thing that Red Hat engineers came out with this simple and powerful solution, that basically let's you implement any server able to run on a linux box. Kudos to them!!!
+Play framework native support for openshift was a long awaited and pretty popular feature (you are still on time to vote for it [here](https://www.redhat.com/openshift/community/content/native-support-for-play-framework-application)). So it's a great thing that Red Hat engineers came out with this simple and powerful solution, that basically let's you implement any server able to run on a linux box. Kudos to them!!!
 
 Licence
 ----------------------------
-This project is distributed under Apache 2 licence. 
+This project is distributed under [Apache 2 licence](http://www.apache.org/licenses/LICENSE-2.0.html). 
