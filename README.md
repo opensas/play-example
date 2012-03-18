@@ -14,7 +14,7 @@ Create a raw (do-it-yourself) application
 
     rhc app create -a play -t raw-0.1
 
-Add this upstream sinatra repo
+Add this upstream play-example repo
 
     cd play
     git remote add upstream -m master https://github.com/opensas/play-example.git
