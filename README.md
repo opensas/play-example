@@ -10,17 +10,17 @@ Running on OpenShift
 
 Create an account at http://openshift.redhat.com/
 
-Create a raw (do-it-yourself) application
+Create a raw (do-it-yourself) application:
 
     rhc app create -a play -t raw-0.1
 
-Add this upstream play-example repo
+Add this upstream play-example repo:
 
     cd play
     git remote add upstream -m master https://github.com/opensas/play-example.git
     git pull -s recursive -X theirs upstream master
     
-Then push the repo upstream
+Then push the repo upstream:
 
     git push
 
@@ -28,18 +28,18 @@ That's it, you can now checkout your application at:
 
     http://play-$yournamespace.rhcloud.com
 
-Now it's a good time to change your application.name setting in conf/application.conf to match your application
+If you are a perfectionist, now it would be a good time to change your application.name setting in conf/application.conf to match your application.
 
 Working with a mysql database
 ----------------------------
 
-Just issue
+Just issue:
 
     rhc app cartridge add -a play -c mysql-5.1
 
 Don't forget to write down the credentials.
 
-Then uncomment the following lines from your conf/application.conf
+Then uncomment the following lines from your conf/application.conf, like this:
 
     # openshift mysql database
     %openshift.db.url=jdbc:mysql://${OPENSHIFT_DB_HOST}:${OPENSHIFT_DB_PORT}/${OPENSHIFT_APP_NAME}
@@ -51,12 +51,12 @@ You can manage your new MySQL database by embedding phpmyadmin-3.4.
 
     rhc app cartridge add -a play -c phpmyadmin-3.4
 
-It's also a good idea to create a diferent user with limited privileges con the database
+It's also a good idea to create a different user with limited privileges on the database.
 
 Updating your application
 ----------------------------
 
-To deploy your changes to openshift just add your changes to the index, commit and push
+To deploy your changes to openshift just add your changes to the index, commit and push:
 
     git add . -A
 
@@ -67,11 +67,11 @@ To deploy your changes to openshift just add your changes to the index, commit a
 Working with modules
 ----------------------------
 
-Dont't forget to issue 
+You dont' have to do anything special, just add your modules to conf/dependencies.yml. Openshift will run
 
-    play deps --forceCopy
+    play deps --forProd --clearcache
 
-Before add your changes to the index
+before starting you application, to make sure that your dependencias are all upto date.
 
 Trouble shooting
 ----------------------------
@@ -79,6 +79,23 @@ Trouble shooting
 To find out what's going on in openshift, issue
 
     rhc app tail -a play
+
+If you feel like investigating further, you can
+
+    rhc app show -a play
+
+    Application Info
+    ================
+    raw
+        Framework: raw-0.1
+        Creation: 2012-03-18T12:39:18-04:00
+            UUID: dd7bb76f70e64d93b2aad1f55d4b8002
+        Git URL: ssh://$youruuid@play-$yournamespace.rhcloud.com/~/git/raw.git/
+        Public URL: http://play-$yournamespace.rhcloud.com
+
+Then you can connect using ssh like this:
+
+    ssh $youruuid@play-$yournamespace.rhcloud.com
 
 Having a look under the hood
 ----------------------------
@@ -111,8 +128,12 @@ By default play will run in production mode, you can change it setting %openshif
 Acknowledgments
 ----------------------------
 
-I couldn't have developed this quickstar without the help of marekjelen (https://github.com/marekjelen) who answered my questions on stackoverflow and who also shared his JRuby quickstart repo (https://github.com/marekjelen/openshift-jruby#readme).
+I couldn't have developed this quickstar without the help of marekjelen (https://github.com/marekjelen) who answered my questions on stackoverflow and who also shared his JRuby quickstart repo (https://github.com/marekjelen/openshift-jruby#readme). (I know, open source rocks!)
 
 It was also of great help Grant Shipley's article on building a quickstart for openshift (https://www.redhat.com/openshift/community/blogs/how-to-create-an-openshift-github-quick-start-project)
 
 Play framework native support for openshift was a long awaited and pretty popular feature (you are still on time to vote for it at https://www.redhat.com/openshift/community/content/native-support-for-play-framework-application) So it's a great thing that Red Hat engineers came out with this simple and powerful solution, that basically let's you implement any server able to run on a linux box. Kudos to them!!!
+
+Licence
+----------------------------
+This project is distributed under Apache 2 licence. 
