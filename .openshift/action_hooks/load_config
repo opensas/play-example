@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# debug
+# set -x
+
 # check needed vars
 if [[ -z $OPENSHIFT_REPO_DIR ]]; then
 	echo "Error: OPENSHIFT_REPO_DIR not defined"
@@ -20,20 +23,37 @@ fi
 VERSION="1.2.4"
 DEPS_PARAMS="--sync"
 ID="openshift"
-LOG_FILE="${OPENSHIFT_LOG_DIR}play.log"
+PLAY_PARAMS=""
 
-CONFIG_FILE="${OPENSHIFT_REPO_DIR}.openshift/config"
+PLAY_CONFIG_FILE="${OPENSHIFT_REPO_DIR}conf/application.conf"
 
-if [[ -f $CONFIG_FILE ]]; then
-	. "$CONFIG_FILE"
+if [[ -f $PLAY_CONFIG_FILE ]]; then
+
+	function read_conf {
+		local key=$1
+		local default=$2
+		local result=`grep "^$key" $PLAY_CONFIG_FILE | grep -oP '=.*' | cut -b 1 --complement`
+		
+		if [[ -n "$result" ]]; then
+			echo $result
+		else
+			echo $default
+		fi
+	}
+
+	VERSION=$(read_conf "openshift.play.version" $VERSION)
+	DEPS_PARAMS=$(read_conf "openshift.deps.params" $DEPS_PARAMS)
+	ID=$(read_conf "openshift.id" $ID)
+	PLAY_PARAMS=$(read_conf "openshift.play.params" $PLAY_PARAMS)
 fi
 
 # validate version
-if [ $VERSION \< "1.2.3" ]; then
-	echo "Error: version $VERSION not supported, user version 1.2.3 or higher"
+if [ "$VERSION" \< "1.2.3" ]; then
+	echo "Error: version $VERSION not supported, use version 1.2.3 or higher"
 	return 1
 fi
 
+LOG_FILE="${OPENSHIFT_LOG_DIR}play.log"
 PLAY_COMMAND="${OPENSHIFT_DATA_DIR}play-${VERSION}/play"
 
 return 0
