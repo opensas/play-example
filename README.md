@@ -79,3 +79,40 @@ Trouble shooting
 To find out what's going on in openshift, issue
 
     rhc app tail -a play
+
+Having a look under the hood
+----------------------------
+
+.openshift/action_hooks/pre_build does the following everytime you push changes
+
+* reads play version from openshift.play.version at application.conf (1.2.4 by default)
+
+* check it the desired version is installed, if not it downloads and installs play framework at $OPENSHIFT_DATA_DIR
+
+* removes any other play framework version
+
+then .openshift/action_hooks/start goes like this
+
+* it executes .openshift/action_hooks/stop to stop the application
+
+* cleans environment and update dependencies using openshift.deps.params for play deps parameters (uses "--forProd --clearcache" by default)
+
+    play clean
+    play deps $DEPS_PARAMS -Divy.hom=/tmp/ivy2
+
+* finally it starts the application, using openshift.id (by default the configuration id to use is openshift). You can specify additional parameters with openshift.play.params.
+
+    play start --%ID $PLAY_PARAMS
+
+By default play will run in production mode, you can change it setting %openshift.application.mode=dev in application.conf. The server will listen to ${OPENSHIFT_INTERNAL_PORT} at ${OPENSHIFT_INTERNAL_IP}.
+
+* .openshift/action_hooks/stop just tries to kill the server.pid process, and then checks that no "java" process is running. If it's there, it tries five times to kill it nicely, and then if tries another five times to kill it with -SIGKILL.
+
+Acknowledgments
+----------------------------
+
+I couldn't have developed this quickstar without the help of marekjelen (https://github.com/marekjelen) who answered my questions on stackoverflow and who also shared his JRuby quickstart repo (https://github.com/marekjelen/openshift-jruby#readme).
+
+It was also of great help Grant Shipley's article on building a quickstart for openshift (https://www.redhat.com/openshift/community/blogs/how-to-create-an-openshift-github-quick-start-project)
+
+Play framework native support for openshift was a long awaited and pretty popular feature (you are still on time to vote for it at https://www.redhat.com/openshift/community/content/native-support-for-play-framework-application) So it's a great thing that Red Hat engineers came out with this simple and powerful solution, that basically let's you implement any server able to run on a linux box. Kudos to them!!!
