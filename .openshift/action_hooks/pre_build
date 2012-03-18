@@ -10,31 +10,7 @@ if [[ ! $? -eq 0 ]]; then
 	exit $?
 fi
 
-function lower {
-	local result=`echo $1 | tr [:upper:] [:lower:]`
-	echo "$result"
-}
-
-if [ $(lower $VERSION) = "latest" ]; then
-
-	function latest {
-
-		PLAY_VERSIONS_FILE=${OPENSHIFT_TMP_DIR}/index.html
-		curl -o $PLAY_VERSIONS_FILE http://download.playframework.org/releases &> null
-
-		#no pude bajar el archivo con todas las versiones
-		if [[ ! -f $PLAY_VERSIONS_FILE ]]; then
-			echo "1.2.4"
-		else
-			echo grep -v '.*-RC.*' index.html | grep -oP 'play-1.*?.zip' | sort -Vru | head -1
-			rm $PLAY_VERSIONS_FILE
-		fi
-	}
-	VERSION=$(latest)
-	echo "Found latest version of play 1.x: play $VERSION"
-fi
-
-PLAY_PATH="play-$VERSION"
+PLAY_PATH="play-$VERSION/"
 
 # use tmp file just in case it hangs up
 PLAY_ARCH="${OPENSHIFT_TMP_DIR}play-$VERSION.zip"
@@ -44,15 +20,6 @@ cd "$OPENSHIFT_DATA_DIR"
 if [[ -d $PLAY_PATH ]]; then
 	echo "Play $VERSION already installed at `pwd`/$PLAY_PATH"
 else
-
-	#cleanup, remove other play versions
-	for version in [play-]*; do 
-		# avoid showing "Removing version [play-]*" message
-		if [[ -d $version ]]; then			
-			echo "Removing version $version"
-			rm -fr $version
-		fi
-	done
 
 	echo "Installing play $VERSION"
 
@@ -69,7 +36,7 @@ else
 	fi
 
 	unzip "$PLAY_ARCH"
-	#rm $PLAY_ARCH
+	rm $PLAY_ARCH
 
 	PLAY_FULL_PATH="${OPENSHIFT_DATA_DIR}${PLAY_PATH}"
 
@@ -78,7 +45,25 @@ else
 		exit -1
 	fi
 
-	# PATH="${PLAY_FULL_PATH}:$PATH"
+	#verify that the desired version installed successfully
+	if [[ ! `${PLAY_FULL_PATH}play version | tail -1` = $VERSION ]]; then
+		echo "Error installing play $VERSION to $PLAY_FULL_PATH"
+		rm -fr $PLAY_FULL_PATH
+		exit -1
+	fi
+
+	#cleanup, remove other play versions
+	for old in [play-]*; do 
+		# avoid showing "Removing version [play-]*" message
+		if [[ -d $old ]]; then
+			if [[ $old = "play-$VERSION" ]]; then
+				echo "Skipping current version version $old"
+			else
+				echo "Removing version $old"
+				rm -fr $old
+			fi
+		fi
+	done
 
 fi
 
