@@ -28,6 +28,8 @@ That's it, you can now checkout your application at:
 
     http://play-$yournamespace.rhcloud.com
 
+Now it's a good time to change your application.name setting in conf/application.conf to match your application
+
 Working with a mysql database
 ----------------------------
 
@@ -58,7 +60,7 @@ To deploy your changes to openshift just add your changes to the index, commit a
 
     git add . -A
 
-    git commit -m "a nice commit"
+    git commit -m "a nice message"
 
     git push origin
 
@@ -74,3 +76,6 @@ Before add your changes to the index
 Trouble shooting
 ----------------------------
 
+To find out what's going on in openshift, issue
+
+    rhc app tail -a play
