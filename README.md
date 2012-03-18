@@ -110,12 +110,16 @@ then .openshift/action_hooks/start goes like this
 
 * cleans environment and update dependencies using openshift.deps.params for play deps parameters (uses "--forProd --clearcache" by default)
 
+```bash
     play clean
     play deps $DEPS_PARAMS -Divy.hom=/tmp/ivy2
+```
 
 * finally it starts the application, using openshift.id (by default the configuration id to use is openshift). You can specify additional parameters with openshift.play.params.
 
+```bash
     play start --%ID $PLAY_PARAMS
+```
 
 By default play will run in production mode, you can change it setting %openshift.application.mode=dev in application.conf. The server will listen to ${OPENSHIFT_INTERNAL_PORT} at ${OPENSHIFT_INTERNAL_IP}.
 
