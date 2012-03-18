@@ -40,7 +40,7 @@ Don't forget to write down the credentials.
 Then uncomment the following lines from your conf/application.conf
 
     # openshift mysql database
-    %openshift.db.url=jdbc:mysql://${OPENSHIFT_DB_HOST}:${OPENSHIFT_DB_PORT}/playdemo
+    %openshift.db.url=jdbc:mysql://${OPENSHIFT_DB_HOST}:${OPENSHIFT_DB_PORT}/${OPENSHIFT_APP_NAME}
     %openshift.db.driver=com.mysql.jdbc.Driver
     %openshift.db.user=admin
     %openshift.db.pass=<write your password here>
