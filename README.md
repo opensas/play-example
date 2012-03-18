@@ -10,7 +10,7 @@ Running on OpenShift
 
 Create an account at http://openshift.redhat.com/
 
-Create a ruby-1.8 application
+Create a raw (do-it-yourself) application
 
     rhc app create -a play -t raw-0.1
 
