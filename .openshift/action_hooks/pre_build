@@ -20,7 +20,7 @@ if [ $(lower $VERSION) = "latest" ]; then
 	function latest {
 
 		PLAY_VERSIONS_FILE=${OPENSHIFT_TMP_DIR}/index.html
-		curl -o $PLAY_VERSIONS_FILE http://download.playframework.org/releases
+		curl -o $PLAY_VERSIONS_FILE http://download.playframework.org/releases &> null
 
 		#no pude bajar el archivo con todas las versiones
 		if [[ ! -f $PLAY_VERSIONS_FILE ]]; then
