@@ -1,10 +1,5 @@
 #!/bin/bash
 
-#local test
-# export OPENSHIFT_REPO_DIR="/home/sas/devel/apps/openshift/raw/"
-# export OPENSHIFT_DATA_DIR="/home/sas/devel/apps/openshift/raw/data/"
-# export OPENSHIFT_TMP_DIR="/home/sas/devel/apps/openshift/raw/tmp/"
-
 # debug
 # set -x
 
@@ -13,6 +8,30 @@
 
 if [[ ! $? -eq 0 ]]; then
 	exit $?
+fi
+
+function lower {
+	local result=`echo $1 | tr [:upper:] [:lower:]`
+	echo "$result"
+}
+
+if [ $(lower $VERSION) = "latest" ]; then
+
+	function latest {
+
+		PLAY_VERSIONS_FILE=${OPENSHIFT_TMP_DIR}/index.html
+		curl -o $PLAY_VERSIONS_FILE http://download.playframework.org/releases
+
+		#no pude bajar el archivo con todas las versiones
+		if [[ ! -f $PLAY_VERSIONS_FILE ]]; then
+			echo "1.2.4"
+		else
+			echo grep -v '.*-RC.*' index.html | grep -oP 'play-1.*?.zip' | sort -Vru | head -1
+			rm $PLAY_VERSIONS_FILE
+		fi
+	}
+	VERSION=$(latest)
+	echo "Found latest version of play 1.x: play $VERSION"
 fi
 
 PLAY_PATH="play-$VERSION"
