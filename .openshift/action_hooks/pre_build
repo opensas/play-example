@@ -32,7 +32,7 @@ else
 
 	if [[ ! -f $PLAY_ARCH ]]; then
 		echo "Error downloading play $VERSION from $PLAY_URL"
-		exit -1
+		exit 1
 	fi
 
 	unzip "$PLAY_ARCH"
@@ -42,14 +42,14 @@ else
 
 	if [[ ! -d $PLAY_FULL_PATH ]]; then
 		echo "Error installing play $VERSION to $PLAY_FULL_PATH"
-		exit -1
+		exit 1
 	fi
 
 	#verify that the desired version installed successfully
 	if [[ ! `${PLAY_FULL_PATH}play version | tail -1` = $VERSION ]]; then
 		echo "Error installing play $VERSION to $PLAY_FULL_PATH"
 		rm -fr $PLAY_FULL_PATH
-		exit -1
+		exit 1
 	fi
 
 	#cleanup, remove other play versions
