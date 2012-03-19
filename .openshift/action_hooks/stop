@@ -38,7 +38,7 @@ if [[ -n `ps -A | grep java` ]]; then
 		bash -c "pkill java &> $LOG_FILE" &> /dev/null
 		sleep $c
 		#killed it
-		if [[ -z `ps -A | grep java` ]]; then
+		if [[ -z `ps -A | grep ' java$'` ]]; then
 			exit 0
 		fi
 	done
@@ -49,13 +49,13 @@ if [[ -n `ps -A | grep java` ]]; then
 		bash -c "pkill -SIGKILL java &> $LOG_FILE" &> /dev/null
 		sleep $c
 		#killed it
-		if [[ -z `ps -A | grep java` ]]; then
+		if [[ -z `ps -A | grep ' java$'` ]]; then
 			exit 0
 		fi
 	done
 
 	#couldn't kill it
-	if [[ -n `ps -A | grep java` ]]; then
+	if [[ -n `ps -A | grep ' java$'` ]]; then
 		echo "Error: could not stop play application, error executing 'pkill java'"
 		exit 1
 	fi
