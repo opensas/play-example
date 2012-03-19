@@ -30,7 +30,7 @@ if [[ -f "server.pid" ]]; then
 fi
 
 #it survived, try to kill it manually
-if [[ -n `ps -A | grep java` ]]; then
+if [[ -n `ps -A | grep ' java$'` ]]; then
 
 	# try 5 times to kill it
 	for c in `seq 1 5`; do
