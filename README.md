@@ -10,7 +10,7 @@ Running on OpenShift
 
 Register at http://openshift.redhat.com/, and then create a raw (do-it-yourself) application:
 
-    rhc app create -a play -t diy-0.1
+    rhc app create -a play -t diy-0.1 -l yourlogin@yourmail.com
 
 Add this upstream play-example repo:
 
