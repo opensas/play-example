@@ -15,8 +15,8 @@ Register at http://openshift.redhat.com/, and then create a raw (do-it-yourself)
 Add this upstream play-example repo:
 
     cd play
-    git remote add upstream -m master https://github.com/opensas/play-example.git
-    git pull -s recursive -X theirs upstream master
+    git remote add quickstart -m master https://github.com/opensas/play-example.git
+    git pull -s recursive -X theirs quickstart master
     
 Then push the repo upstream:
 
