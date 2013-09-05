@@ -19,8 +19,8 @@ if [[ -z $OPENSHIFT_TMP_DIR ]]; then
 	return 1
 fi
 
-if [[ -z $OPENSHIFT_LOG_DIR ]]; then
-	echo "Error: OPENSHIFT_LOG_DIR not defined"
+if [[ -z $OPENSHIFT_DIY_LOG_DIR ]]; then
+	echo "Error: OPENSHIFT_DIY_LOG_DIR not defined"
 	return 1
 fi
 
@@ -60,7 +60,7 @@ if [ "$VERSION" \< "1.2.3" ]; then
 	return 1
 fi
 
-LOG_FILE="${OPENSHIFT_LOG_DIR}system.out"
+LOG_FILE="${OPENSHIFT_DIY_LOG_DIR}system.out"
 PLAY_COMMAND="${OPENSHIFT_DATA_DIR}play-${VERSION}/play"
 
 return 0
